@@ -1,9 +1,11 @@
-export const capitalize = () => {
-    // todo: build this function
-    // `capitalize("jOn")` should output `"Jon"`
+export const capitalize = (name: string) => {
+  const firstLetter = name.charAt(0).toUpperCase(); 
+  const remainingLetters = name.slice(1).toLowerCase();
+  return `${firstLetter}${remainingLetters}`
 }
 
-export const formatPhoneNumber = () => {
-    // todo: build this function
-    // `formatPhoneNumber("1234567")` should be `"12-34-56-7"`
+export const formatPhoneNumber = (phoneInput: string) => {
+  const array = phoneInput.match(/^(\d{2})(\d{2})(\d{2})(\d{1})$/) as unknown as string[];
+  array.shift();
+  return array.join("-");
 }
