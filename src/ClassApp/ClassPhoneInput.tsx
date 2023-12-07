@@ -3,12 +3,12 @@ import { PhoneNumber } from "../types";
 
 type ClassPhoneInputProps = {
   phoneInput: PhoneNumber;
-  handlePhoneInput: (phoneInput: PhoneNumber) => void;
+  setPhoneInput: (phoneInput: PhoneNumber) => void;
 };
 
 export class ClassPhoneInput extends Component<ClassPhoneInputProps> {
   render() {
-    const { phoneInput, handlePhoneInput } = this.props;
+    const { phoneInput, setPhoneInput } = this.props;
     const refs = [
       createRef<HTMLInputElement>(),
       createRef<HTMLInputElement>(),
@@ -44,7 +44,7 @@ export class ClassPhoneInput extends Component<ClassPhoneInputProps> {
         if (shouldGoToPreviousRef) {
           previousRef.current?.focus();
         }
-        handlePhoneInput(newPhoneInput);
+        setPhoneInput(newPhoneInput);
       };
 
     return (

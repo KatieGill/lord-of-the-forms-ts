@@ -17,9 +17,9 @@ const cityErrorMessage = "State is Invalid";
 const phoneNumberErrorMessage = "Invalid Phone Number";
 
 export const FunctionalForm = ({
-  handleUserInformation,
+  setUserInformation,
 }: {
-  handleUserInformation: (userInformation: UserInformation) => void;
+  setUserInformation: (userInformation: UserInformation) => void;
 }) => {
   const [firstNameInput, setFirstNameInput] = useState<string>("");
   const [lastNameInput, setLastNameInput] = useState<string>("");
@@ -28,6 +28,18 @@ export const FunctionalForm = ({
   const [phoneInput, setPhoneInput] = useState<PhoneNumber>(["", "", "", ""]);
   const [shouldShowErrorMessage, setShouldShowErrorMessage] =
     useState<boolean>(false);
+
+  const firstNameIsValid = isNameValid(firstNameInput);
+  const lastNameIsValid = isNameValid(lastNameInput);
+  const emailIsValid = isEmailValid(emailInput);
+  const cityIsValid = isValidCity(cityInput);
+  const phoneIsValid = isPhoneValid(phoneInput);
+
+  const shouldShowFirstNameError = !firstNameIsValid && shouldShowErrorMessage;
+  const shouldShowLastNameError = !lastNameIsValid && shouldShowErrorMessage;
+  const shouldShowEmailError = !emailIsValid && shouldShowErrorMessage;
+  const shouldShowCityError = !cityIsValid && shouldShowErrorMessage;
+  const shouldShowPhoneError = !phoneIsValid && shouldShowErrorMessage;
 
   const resetState = () => {
     setFirstNameInput("");
@@ -43,16 +55,16 @@ export const FunctionalForm = ({
       onSubmit={(e) => {
         e.preventDefault();
         if (
-          !isNameValid(firstNameInput) ||
-          !isNameValid(lastNameInput) ||
-          !isEmailValid(emailInput) ||
-          !isValidCity(cityInput) ||
-          !isPhoneValid(phoneInput)
+          !firstNameIsValid ||
+          !lastNameIsValid ||
+          !emailIsValid ||
+          !cityIsValid ||
+          !phoneIsValid
         ) {
           alert("Bad Inputs");
           setShouldShowErrorMessage(true);
         } else {
-          handleUserInformation({
+          setUserInformation({
             firstName: firstNameInput,
             lastName: lastNameInput,
             email: emailInput,
@@ -78,12 +90,11 @@ export const FunctionalForm = ({
           onChange: (e) => setFirstNameInput(e.target.value),
         }}
       />
-      {!isNameValid(firstNameInput) && (
-        <ErrorMessage
-          message={firstNameErrorMessage}
-          show={shouldShowErrorMessage}
-        />
-      )}
+
+      <ErrorMessage
+        message={firstNameErrorMessage}
+        show={shouldShowFirstNameError}
+      />
 
       {/* last name input */}
       <FunctionalTextInput
@@ -96,12 +107,11 @@ export const FunctionalForm = ({
           onChange: (e) => setLastNameInput(e.target.value),
         }}
       />
-      {!isNameValid(lastNameInput) && (
-        <ErrorMessage
-          message={lastNameErrorMessage}
-          show={shouldShowErrorMessage}
-        />
-      )}
+
+      <ErrorMessage
+        message={lastNameErrorMessage}
+        show={shouldShowLastNameError}
+      />
 
       {/* Email Input */}
       <FunctionalTextInput
@@ -114,12 +124,8 @@ export const FunctionalForm = ({
           onChange: (e) => setEmailInput(e.target.value),
         }}
       />
-      {!isEmailValid(emailInput) && (
-        <ErrorMessage
-          message={emailErrorMessage}
-          show={shouldShowErrorMessage}
-        />
-      )}
+
+      <ErrorMessage message={emailErrorMessage} show={shouldShowEmailError} />
 
       {/* City Input */}
       <FunctionalTextInput
@@ -133,25 +139,18 @@ export const FunctionalForm = ({
           onChange: (e) => setCityInput(e.target.value),
         }}
       />
-      {!isValidCity(cityInput) && (
-        <ErrorMessage
-          message={cityErrorMessage}
-          show={shouldShowErrorMessage}
-        />
-      )}
+
+      <ErrorMessage message={cityErrorMessage} show={shouldShowCityError} />
 
       <FunctionalPhoneInput
         phoneInput={phoneInput}
-        handlePhoneInput={(phoneInput: PhoneNumber) =>
-          setPhoneInput(phoneInput)
-        }
+        setPhoneInput={setPhoneInput}
       />
-      {!isPhoneValid(phoneInput) && (
-        <ErrorMessage
-          message={phoneNumberErrorMessage}
-          show={shouldShowErrorMessage}
-        />
-      )}
+
+      <ErrorMessage
+        message={phoneNumberErrorMessage}
+        show={shouldShowPhoneError}
+      />
 
       <input type="submit" value="Submit" />
     </form>

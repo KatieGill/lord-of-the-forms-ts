@@ -17,7 +17,7 @@ const cityErrorMessage = "State is Invalid";
 const phoneNumberErrorMessage = "Invalid Phone Number";
 
 type ClassFormProps = {
-  handleUserInformation: (userinfo: UserInformation) => void;
+  setUserInformation: (userinfo: UserInformation) => void;
 };
 
 type ClassFormState = {
@@ -47,7 +47,21 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
       phoneInput,
       shouldShowErrorMessage,
     } = this.state;
-    const { handleUserInformation } = this.props;
+    const { setUserInformation } = this.props;
+
+    const firstNameIsValid = isNameValid(firstNameInput);
+    const lastNameIsValid = isNameValid(lastNameInput);
+    const emailIsValid = isEmailValid(emailInput);
+    const cityIsValid = isValidCity(cityInput);
+    const phoneIsValid = isPhoneValid(phoneInput);
+
+    const shouldShowFirstNameError =
+      !firstNameIsValid && shouldShowErrorMessage;
+    const shouldShowLastNameError = !lastNameIsValid && shouldShowErrorMessage;
+    const shouldShowEmailError = !emailIsValid && shouldShowErrorMessage;
+    const shouldShowCityError = !cityIsValid && shouldShowErrorMessage;
+    const shouldShowPhoneError = !phoneIsValid && shouldShowErrorMessage;
+
     const resetState = () => {
       this.setState({ firstNameInput: "" });
       this.setState({ lastNameInput: "" });
@@ -70,7 +84,7 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
             alert("Bad Inputs");
             this.setState({ shouldShowErrorMessage: true });
           } else {
-            handleUserInformation({
+            setUserInformation({
               firstName: firstNameInput,
               lastName: lastNameInput,
               email: emailInput,
@@ -96,12 +110,11 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
             onChange: (e) => this.setState({ firstNameInput: e.target.value }),
           }}
         />
-        {!isNameValid(firstNameInput) && (
-          <ErrorMessage
-            message={firstNameErrorMessage}
-            show={shouldShowErrorMessage}
-          />
-        )}
+
+        <ErrorMessage
+          message={firstNameErrorMessage}
+          show={shouldShowFirstNameError}
+        />
 
         {/* last name input */}
         <ClassTextInput
@@ -114,12 +127,11 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
             onChange: (e) => this.setState({ lastNameInput: e.target.value }),
           }}
         />
-        {!isNameValid(lastNameInput) && (
-          <ErrorMessage
-            message={lastNameErrorMessage}
-            show={shouldShowErrorMessage}
-          />
-        )}
+
+        <ErrorMessage
+          message={lastNameErrorMessage}
+          show={shouldShowLastNameError}
+        />
 
         {/* Email Input */}
         <ClassTextInput
@@ -132,12 +144,8 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
             onChange: (e) => this.setState({ emailInput: e.target.value }),
           }}
         />
-        {!isEmailValid(emailInput) && (
-          <ErrorMessage
-            message={emailErrorMessage}
-            show={shouldShowErrorMessage}
-          />
-        )}
+
+        <ErrorMessage message={emailErrorMessage} show={shouldShowEmailError} />
 
         {/* City Input */}
         <ClassTextInput
@@ -151,26 +159,20 @@ export class ClassForm extends Component<ClassFormProps, ClassFormState> {
             onChange: (e) => this.setState({ cityInput: e.target.value }),
           }}
         />
-        {!isValidCity(cityInput) && (
-          <ErrorMessage
-            message={cityErrorMessage}
-            show={shouldShowErrorMessage}
-          />
-        )}
+
+        <ErrorMessage message={cityErrorMessage} show={shouldShowCityError} />
 
         <ClassPhoneInput
           phoneInput={phoneInput}
-          handlePhoneInput={(phoneInput) =>
+          setPhoneInput={(phoneInput) =>
             this.setState({ phoneInput: phoneInput })
           }
         />
 
-        {!isPhoneValid(phoneInput) && (
-          <ErrorMessage
-            message={phoneNumberErrorMessage}
-            show={shouldShowErrorMessage}
-          />
-        )}
+        <ErrorMessage
+          message={phoneNumberErrorMessage}
+          show={shouldShowPhoneError}
+        />
 
         <input type="submit" value="Submit" />
       </form>

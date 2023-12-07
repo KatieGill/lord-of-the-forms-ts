@@ -13,16 +13,9 @@ export class ClassApp extends Component<Record<string, never>, State> {
     return (
       <>
         <h2>Class</h2>
-        <ProfileInformation
-          userData={
-            // toggle the following lines to change
-            // null
-            //defaultUser
-            userInformation
-          }
-        />
+        <ProfileInformation userData={userInformation} />
         <ClassForm
-          handleUserInformation={(userInfo: UserInformation) =>
+          setUserInformation={(userInfo) =>
             this.setState({ userInformation: userInfo })
           }
         />

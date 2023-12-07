@@ -3,10 +3,10 @@ import { PhoneNumber } from "../types";
 
 export function FunctionalPhoneInput({
   phoneInput,
-  handlePhoneInput,
+  setPhoneInput,
 }: {
   phoneInput: PhoneNumber;
-  handlePhoneInput: (phoneInput: PhoneNumber) => void;
+  setPhoneInput: (phoneInput: PhoneNumber) => void;
 }) {
   const refs = [
     useRef<HTMLInputElement>(null),
@@ -42,7 +42,7 @@ export function FunctionalPhoneInput({
       if (shouldGoToPreviousRef) {
         previousRef.current?.focus();
       }
-      handlePhoneInput(newPhoneInput);
+      setPhoneInput(newPhoneInput);
     };
 
   return (
